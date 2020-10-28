@@ -2,6 +2,18 @@
 
 ## 简介
 > kudu是专门为hadoop平台开发的列式存储管理器
+- 列式存储
+> 数据存储在强类型的列中，优势：1、高效读取指定列数据；2、针对单一数据类型的压缩效率高；
+- Table
+> 包含元数据信息和全局有序的主键，分为若干个tablets
+- Tablet
+> tablet可以复制多个副本，其中有一个主tablet;任意副本都可以提供读服务，而写需要tablet服务器达成共识。
+- Tablet Server
+> Server分为主Server和从Server，只有主Server可以提供写服务，而所有的Server都可以提供读服务；一个Server可以服务多个Tablet，一个Tablet可以被多个Server服务
+- Master
+> Master监控所有的Tablet,Tablet Server,Catalog Table以及集群相关的元数据信息；同一时间只能有一个Master，挂了之后新的Master可以通过选举产生；Master所有数据都存储在Tablet中，可以复制到到所有候选的Master；Tablet Server定期发送心跳信息给Master；
+- Catalog Table
+> catalog table是kudu元数据信息的集中地，保存table和tablet的的信息，不可以直接进行读写，只能通过客户端的api来访问
 
 ## 部署
 ### 安装
